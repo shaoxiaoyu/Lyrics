@@ -158,14 +158,14 @@ class Model(object):
             with tf.variable_scope(self.rnn_mode + scope):
                 cell = rnn.BasicLSTMCell(num_units=self.num_units)
                 attn_mech = tf.contrib.seq2seq.LuongAttention(
-                    num_units=self.embedding_dim,
+                    num_units=self.num_units,
                     memory=memory,
                     memory_sequence_length=length - 1,
                     name='LuongAttention')
                 dec_cell = tf.contrib.seq2seq.AttentionWrapper(
                     cell=cell,
                     attention_mechanism=attn_mech,
-                    attention_layer_size=self.embedding_dim,
+                    attention_layer_size=self.num_units,
                     name='Attention_Wrapper')
                 initial_state = dec_cell.zero_state(dtype=tf.float32, batch_size=self.batch_size).clone(
                                                     cell_state=state)
